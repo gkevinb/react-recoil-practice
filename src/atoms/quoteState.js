@@ -1,23 +1,13 @@
 import { atom, selector } from "recoil";
 
-export const basketState = atom({
-    key: "basketState", // unique ID (with respect to other atoms/selectors)
-    default: {
-        items: [],
-        name: "blue",
-        filteredBy: null,
-    }, // default value (aka initial value)
-});
+export const currentQuoteQuery = selector({
+    key: "currentQuote", // unique ID (with respect to other atoms/selectors)
+    get: async ({ get }) => {
+        const response = await fetch('https://type.fit/api/quotes')
+        const data = await response.json(); // [{}, {}, {}]
+        const quote = data[Math.floor(Math.random() * Math.floor(data.length))] // {}
 
-export const basketItemsTotal = selector({
-    key: "basketItemsTotal", // unique ID (with respect to other atoms/selectors)
-    get: ({ get }) => {
-        const basket = get(basketState);
 
-        const totalPrice = basket.items.reduce(
-            (total, item) => item.price + total, 0 /* 0 is the initial value */
-        );
-
-        return totalPrice;
+        return quote;
     },
 });

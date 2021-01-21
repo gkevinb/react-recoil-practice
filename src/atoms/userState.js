@@ -8,12 +8,3 @@ export const userState = atom({
         isMale: true,
     }, // default value (aka initial value)
 });
-
-// const userNameCharCount = selector({
-//     key: "userNameCharCount", // unique ID (with respect to other atoms/selectors)
-//     get: ({ get }) => {
-//         const text = get(textState);
-
-//         return text.length;
-//     },
-// });

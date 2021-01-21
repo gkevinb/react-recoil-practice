@@ -1,4 +1,4 @@
-import { atom, selector } from "recoil";
+import { atom, selector, selectorFamily } from "recoil";
 
 export const basketState = atom({
     key: "basketState", // unique ID (with respect to other atoms/selectors)
@@ -9,14 +9,18 @@ export const basketState = atom({
     }, // default value (aka initial value)
 });
 
-export const basketItemsTotal = selector({
+export const basketItemsTotal = selectorFamily({ /* selectorFamily is used when sending in options */
     key: "basketItemsTotal", // unique ID (with respect to other atoms/selectors)
-    get: ({ get }) => {
+    get: options => ({ get }) => {
         const basket = get(basketState);
 
-        const totalPrice = basket.items.reduce(
+        let totalPrice = basket.items.reduce(
             (total, item) => item.price + total, 0 /* 0 is the initial value */
         );
+
+        if(options.addTax){
+            totalPrice = totalPrice * 1.2; // 20%
+        }
 
         return totalPrice;
     },
